@@ -81,6 +81,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\SolutionVersion.cs">
+      <Link>SolutionVersion.cs</Link>
+    </Compile>
     <Compile Include="Deployment\Core\ConfigurationRepositoryTests.cs" />
     <Compile Include="Deployment\Core\DeploymentPlanTests.cs" />
     <Compile Include="Deployment\Core\TaskExecutorTests.cs" />
