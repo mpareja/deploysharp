@@ -5,7 +5,7 @@ using NDepend.Helpers.FileDirectoryPath;
 
 namespace DeploySharp.Tasks
 {
-	public class AppOfflineTask : IExecutable
+	public class AppOfflineTask : IExecutableWithContext
 	{
 		public AppOfflineTask(IWebServer webServer, IAssemblyResourceManager assemblyResourceManager)
 		{

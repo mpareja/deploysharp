@@ -6,7 +6,7 @@ using NDepend.Helpers.FileDirectoryPath;
 
 namespace DeploySharp.Tasks
 {
-	public class ExtractWebsiteTask : IExecutable
+	public class ExtractWebsiteTask : IExecutableWithContext
 	{
 		public ExtractWebsiteTask(IExtractZip extractZip)
 		{

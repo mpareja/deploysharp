@@ -59,7 +59,7 @@ namespace Tests.Deployment.Core
 				_executor.ExecuteTask (typeof(TaskExecutorTests)));
 		}
 
-		public class TestTask : IExecutable
+		public class TestTask : IExecutableWithContext
 		{
 			public void Execute(TaskContext context)
 			{

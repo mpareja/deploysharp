@@ -4,7 +4,7 @@ using DeploySharp.Tasks;
 
 namespace DeploySharp.Tasks
 {
-	public class ApplyWebConfigFilesToSite : IExecutable
+	public class ApplyWebConfigFilesToSite : IExecutableWithContext
 	{
 		public ApplyWebConfigFilesToSite(ConfigurationRepository configRepo)
 		{

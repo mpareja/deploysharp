@@ -1,6 +1,6 @@
 namespace DeploySharp.Core
 {
-	public interface IExecutable
+	public interface IExecutableWithContext
 	{
 		void Execute(TaskContext context);
 	}
