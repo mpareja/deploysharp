@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using CommonServiceLocator.NinjectAdapter;
 
@@ -44,7 +45,7 @@ namespace Tests.Deployment.Core
 
 			var calls = ExecuteOrderHelper.Calls ();
 			Assert.AreEqual (1, calls.Length);
-			Assert.AreEqual (typeof(Task1), calls[0]);
+			Assert.AreEqual (typeof (Task1), calls[0].DeclaringType);
 		}
 
 		[Test]
@@ -59,40 +60,73 @@ namespace Tests.Deployment.Core
 			var calls = ExecuteOrderHelper.Calls();
 			Assert.AreEqual (2, calls.Length, "Should have executed 2 tasks.");
 
-			Assert.AreEqual (typeof (Task1), calls[0], "Task1 should have ran first!");
-			Assert.AreEqual (typeof (Task2), calls[1], "Task2 should have ran second!");
+			Assert.AreEqual (typeof (Task1), calls[0].DeclaringType, "Task1 should have ran first!");
+			Assert.AreEqual (typeof (Task2), calls[1].DeclaringType, "Task2 should have ran second!");
+		}
+
+		[Test]
+		public void EnableRunningPreparations()
+		{
+			_plan.ExecuteTask<PreparableTask>();
+
+			_plan.RunPreparations();
+
+			var calls = ExecuteOrderHelper.Calls();
+			Assert.AreEqual (1, calls.Length);
+			
+			Assert.AreEqual (typeof (PreparableTask), calls[0].DeclaringType);
+			Assert.AreEqual ("Prepare", calls[0].Name);
 		}
 
 		public class Task1 : IExecutable
 		{
 			public void Execute()
 			{
-				ExecuteOrderHelper.LogCall (GetType());
+				ExecuteOrderHelper.LogCall (GetType().GetMethod ("Execute"));
 			}
 		}
 
-		public class Task2 : Task1 { }
+		public class Task2 : IExecutable
+		{
+			public void Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+			}
+		}
+
+		public class PreparableTask : IExecutable, IPreparable
+		{
+			public void Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+			}
+
+			public void Prepare()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Prepare"));
+			}
+		}
 
 		public class ExecuteOrderHelper
 		{
 			public ExecuteOrderHelper() { Reset(); }
 
-			public static void LogCall(Type type)
+			public static void LogCall(MethodInfo method)
 			{
-				_queue.Enqueue (type);
+				_queue.Enqueue (method);
 			}
 
-			public static Type[] Calls()
+			public static MethodInfo[] Calls()
 			{
 				return _queue.ToArray();
 			}
 
 			public static void Reset()
 			{
-				_queue = new Queue<Type>();
+				_queue = new Queue<MethodInfo> ();
 			}
 
-			private static Queue<Type> _queue;
+			private static Queue<MethodInfo> _queue;
 		}
 
 		private DeploymentPlan _plan;

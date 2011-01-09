@@ -11,6 +11,16 @@ namespace DeploySharp.Core
 			_taskQueue = new Queue<object>();
 		}
 
+		public void RunPreparations()
+		{
+			foreach (var task in _taskQueue)
+			{
+				var preparable = task as IPreparable;
+				if (preparable != null)
+					preparable.Prepare ();
+			}
+		}
+
 		public void RunPlan()
 		{
 			foreach (var task in _taskQueue)
