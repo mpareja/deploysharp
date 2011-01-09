@@ -5,36 +5,43 @@ namespace DeploySharp.Core
 {
 	public class DeploymentPlan : IDeploymentPlanDsl
 	{
-
-		public DeploymentPlan(IExecuteTasks executeTasks)
+		public DeploymentPlan(ITaskBuilder builder)
 		{
-			_executeTasks = executeTasks;
-			_taskQueue = new Queue<Type>();
+			_builder = builder;
+			_taskQueue = new Queue<object>();
 		}
 
 		public void RunPlan()
 		{
-			foreach (var taskType in _taskQueue)
-				_executeTasks.ExecuteTask(taskType);
+			foreach (var task in _taskQueue)
+			{
+				var executable = task as IExecutable;
+				if (executable != null)
+					executable.Execute();
+			}
 		}
 
-		public IDeploymentPlanDsl ExecuteTask<T>() where T : IExecutable
+		public IDeploymentPlanDsl ExecuteTask<T>() where T : class, IExecutable
 		{
-			_taskQueue.Enqueue(typeof(T));
+			var task = _builder.BuildTask<T>();
+			if (task == null)
+				throw new InvalidOperationException("Unable to build task of type: " + typeof(T).FullName);
+
+			_taskQueue.Enqueue(task);
 			return this;
 		}
 
-		public IDeploymentPlanDsl ThenExecute<T>() where T : IExecutable
+		public IDeploymentPlanDsl ThenExecute<T>() where T : class, IExecutable
 		{
 			return ExecuteTask<T>();
 		}
 
-		private readonly IExecuteTasks _executeTasks;
-		private Queue<Type> _taskQueue;
+		private readonly ITaskBuilder _builder;
+		private Queue<object> _taskQueue;
 	}
 
 	public interface IDeploymentPlanDsl
 	{
-		IDeploymentPlanDsl ThenExecute<T>() where T : IExecutable;
+		IDeploymentPlanDsl ThenExecute<T>() where T : class, IExecutable;
 	}
 }
