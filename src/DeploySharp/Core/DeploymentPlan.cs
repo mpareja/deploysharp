@@ -5,7 +5,7 @@ namespace DeploySharp.Core
 {
 	public class DeploymentPlan : IDeploymentPlanDsl
 	{
-		public DeploymentPlan(ITaskBuilder builder)
+		public DeploymentPlan(TaskBuilder builder)
 		{
 			_builder = builder;
 			_taskQueue = new Queue<object>();
@@ -46,8 +46,8 @@ namespace DeploySharp.Core
 			return ExecuteTask<T>();
 		}
 
-		private readonly ITaskBuilder _builder;
-		private Queue<object> _taskQueue;
+		private readonly TaskBuilder _builder;
+		private readonly Queue<object> _taskQueue;
 	}
 
 	public interface IDeploymentPlanDsl

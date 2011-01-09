@@ -2,7 +2,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace DeploySharp.Core
 {
-	public class TaskBuilder : ITaskBuilder
+	public class TaskBuilder
 	{
 		public TaskBuilder(IServiceLocator locator)
 		{
