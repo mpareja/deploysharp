@@ -1,22 +1,24 @@
 using DeploySharp.Core;
 
-using DeploySharp.Tasks;
-
 namespace DeploySharp.Tasks
 {
-	public class ApplyWebConfigFilesToSite : IExecutableWithContext
+	public class ApplyWebConfigFilesToSite : IExecutable
 	{
 		public ApplyWebConfigFilesToSite(ConfigurationRepository configRepo)
 		{
 			_configRepo = configRepo;
 		}
 
-		public void Execute(TaskContext context)
+		public TargetConfig Target { get; set; }
+
+		public BuildInfo Build { get; set; }
+
+		public void Execute()
 		{
-			var appPath = ExtractWebsiteTask.GetAppDirectory (context);
+			var appPath = ExtractWebsiteTask.GetAppDirectory (Target.SiteRoot, Build);
 			
-			_configRepo.SaveAeWebConfigFile (context.Target.SiteName, appPath.GetChildDirectoryWithName ("Ae"));
-			_configRepo.SaveLmsWebConfigFile (context.Target.SiteName, appPath.GetChildDirectoryWithName ("Lms"));
+			_configRepo.SaveAeWebConfigFile (Target.SiteName, appPath.GetChildDirectoryWithName ("Ae"));
+			_configRepo.SaveLmsWebConfigFile (Target.SiteName, appPath.GetChildDirectoryWithName ("Lms"));
 		}
 
 		private readonly ConfigurationRepository _configRepo;

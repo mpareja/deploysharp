@@ -57,12 +57,12 @@ namespace Tests.Deployment.Tasks
 		public void ApplyWebConfigFilesToSite_CopiesLmsWebConfig_ToCorrectLocation()
 		{
 			var repoMock = new Mock<ConfigurationRepository>();
-			var task = new ApplyWebConfigFilesToSite (repoMock.Object);
-
-			task.Execute (new TaskContext {
+			var task = new ApplyWebConfigFilesToSite (repoMock.Object) {
 				Target = new TargetConfig ("beta.example.com", new DirectoryPathAbsolute (@"d:\sites\beta.example.com")),
 				Build = new BuildInfo ("2.14", "2")
-			});
+			};
+
+			task.Execute ();
 
 			repoMock.Verify (x => x.SaveLmsWebConfigFile (
 				"beta.example.com", new DirectoryPathAbsolute(@"d:\sites\beta.example.com-2.14.2\Lms")));
@@ -72,13 +72,12 @@ namespace Tests.Deployment.Tasks
 		public void ApplyWebConfigFilesToSite_CopiesAeWebConfig_ToCorrectLocation()
 		{
 			var repoMock = new Mock<ConfigurationRepository> ();
-			var task = new ApplyWebConfigFilesToSite (repoMock.Object);
-
-			task.Execute (new TaskContext
-			{
+			var task = new ApplyWebConfigFilesToSite (repoMock.Object) {
 				Target = new TargetConfig ("beta.example.com", new DirectoryPathAbsolute (@"d:\sites\beta.example.com")),
 				Build = new BuildInfo ("2.14", "2")
-			});
+			};
+
+			task.Execute ();
 
 			repoMock.Verify (x => x.SaveAeWebConfigFile (
 				"beta.example.com", new DirectoryPathAbsolute (@"d:\sites\beta.example.com-2.14.2\Ae")));

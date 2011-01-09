@@ -15,14 +15,13 @@ namespace DeploySharp.Tasks
 
 		public void Execute(TaskContext context)
 		{
-			var newAppDirectory = GetAppDirectory (context).Path;
+			var newAppDirectory = GetAppDirectory (context.Target.SiteRoot, context.Build).Path;
 			_extractZip.ExtractAllFiles (WEBSITE_FILENAME, newAppDirectory);
 		}
 
-		public static DirectoryPathAbsolute GetAppDirectory(TaskContext context)
+		public static DirectoryPathAbsolute GetAppDirectory(DirectoryPathAbsolute targetSiteRoot, BuildInfo build)
 		{
-			return new DirectoryPathAbsolute (context.Target.SiteRoot.Path
-											  + "-" + context.Build.ToIdString ());
+			return new DirectoryPathAbsolute (targetSiteRoot.Path + "-" + build.ToIdString ());
 		}
 
 		private readonly IExtractZip _extractZip;
