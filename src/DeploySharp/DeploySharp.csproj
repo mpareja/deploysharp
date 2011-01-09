@@ -66,8 +66,10 @@
     <Compile Include="Core\DeploymentPlan.cs" />
     <Compile Include="Core\IExecutable.cs" />
     <Compile Include="Core\IPreparable.cs" />
+    <Compile Include="Core\ITaskResultVisitor.cs" />
     <Compile Include="Core\TargetConfig.cs" />
     <Compile Include="Core\TaskBuilder.cs" />
+    <Compile Include="Core\TaskResult.cs" />
     <Compile Include="IExtractZip.cs" />
     <Compile Include="Infrastructure\IisExpressWebServer.cs" />
     <Compile Include="Infrastructure\IWebServer.cs" />
