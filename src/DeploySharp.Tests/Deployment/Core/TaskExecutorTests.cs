@@ -16,11 +16,7 @@ namespace Tests.Deployment.Core
 		[SetUp]
 		public void Before_each_spec()
 		{
-			_context = new TaskContext();
-
-			// Container will always return _context when asked for TaskContext
 			var standardKernel = new StandardKernel();
-			standardKernel.Bind<TaskContext>().ToConstant (_context);
 
 			_executor = new TaskExecutor(new NinjectServiceLocator (standardKernel));
 		}
@@ -59,6 +55,5 @@ namespace Tests.Deployment.Core
 		}
 
 		private TaskExecutor _executor;
-		private TaskContext _context;
 	}
 }

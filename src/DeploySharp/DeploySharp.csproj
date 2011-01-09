@@ -67,7 +67,6 @@
     <Compile Include="Core\IExecutable.cs" />
     <Compile Include="Core\IExecuteTasks.cs" />
     <Compile Include="Core\TargetConfig.cs" />
-    <Compile Include="Core\TaskContext.cs" />
     <Compile Include="Core\TaskExecutor.cs" />
     <Compile Include="IExtractZip.cs" />
     <Compile Include="Infrastructure\IisExpressWebServer.cs" />
