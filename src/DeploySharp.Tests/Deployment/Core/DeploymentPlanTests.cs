@@ -1,33 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 using CommonServiceLocator.NinjectAdapter;
 
 using DeploySharp.Core;
-using DeploySharp.Tasks;
 
 using Ninject;
 
 using NUnit.Framework;
 
-namespace Tests.Deployment.Core
+namespace DeploySharp.Tests.Deployment.Core
 {
 	[TestFixture]
-	public class DeploymentPlanTests : TestFixtureBase
+	public class DeploymentPlanTests
 	{
-		public override void Setup()
+		[SetUp]
+		public void Setup()
 		{
 			var locator = new NinjectServiceLocator (new StandardKernel ());
 			_plan = new DeploymentPlan (new TaskBuilder (locator));
 
 			ExecuteOrderHelper.Reset ();
-		}
-
-		[Test]
-		public void can_create()
-		{
-			Assert.IsNotNull(_plan);
 		}
 
 		[Test]
@@ -43,9 +36,7 @@ namespace Tests.Deployment.Core
 
 			_plan.RunPlan();
 
-			var calls = ExecuteOrderHelper.Calls ();
-			Assert.AreEqual (1, calls.Length);
-			Assert.AreEqual (typeof (Task1), calls[0].DeclaringType);
+			AssertTaskExecutionOrder<Task1> (1);
 		}
 
 		[Test]
@@ -57,25 +48,18 @@ namespace Tests.Deployment.Core
 
 			_plan.RunPlan();
 
-			var calls = ExecuteOrderHelper.Calls();
-			Assert.AreEqual (2, calls.Length, "Should have executed 2 tasks.");
-
-			Assert.AreEqual (typeof (Task1), calls[0].DeclaringType, "Task1 should have ran first!");
-			Assert.AreEqual (typeof (Task2), calls[1].DeclaringType, "Task2 should have ran second!");
+			AssertTaskExecutionOrder<Task1> (1);
+			AssertTaskExecutionOrder<Task2> (2);
 		}
 
 		[Test]
 		public void EnableRunningPreparations()
 		{
-			_plan.ExecuteTask<PreparableTask>();
+			_plan.ExecuteTask<PreparableTask> ();
 
 			_plan.RunPreparations();
 
-			var calls = ExecuteOrderHelper.Calls();
-			Assert.AreEqual (1, calls.Length);
-			
-			Assert.AreEqual (typeof (PreparableTask), calls[0].DeclaringType);
-			Assert.AreEqual ("Prepare", calls[0].Name);
+			AssertTaskPreparationOrder<PreparableTask> (1);
 		}
 
 		public class Task1 : IExecutable
@@ -84,6 +68,29 @@ namespace Tests.Deployment.Core
 			{
 				ExecuteOrderHelper.LogCall (GetType().GetMethod ("Execute"));
 			}
+		}
+
+		private void AssertTaskPreparationOrder<T> (int orderNumber)
+		{
+			AssertOrder<T> (orderNumber, "Prepare");
+		}
+		private void AssertTaskExecutionOrder<T> (int orderNumber)
+		{
+			AssertOrder<T> (orderNumber, "Execute");
+		}
+		private void AssertOrder<T> (int orderNumber, string methodName)
+		{
+			var calls = ExecuteOrderHelper.Calls ();
+
+			Assert.IsNotNull (calls);
+			Assert.That (orderNumber, Is.AtMost (calls.Length),
+			             "Expected execution order number is greater than the number of actual executions.");
+
+			var ix = orderNumber - 1; // make it zero based
+			var expectedType = typeof (T);
+			Assert.AreEqual (expectedType, calls[ix].DeclaringType, 
+			                 string.Format("#{0} task {2} should have been {1}!", orderNumber, expectedType.Name, methodName));
+			Assert.AreEqual (methodName, calls[0].Name);
 		}
 
 		public class Task2 : IExecutable
