@@ -62,14 +62,6 @@ namespace DeploySharp.Tests.Deployment.Core
 			AssertTaskPreparationOrder<PreparableTask> (1);
 		}
 
-		public class Task1 : IExecutable
-		{
-			public void Execute()
-			{
-				ExecuteOrderHelper.LogCall (GetType().GetMethod ("Execute"));
-			}
-		}
-
 		private void AssertTaskPreparationOrder<T> (int orderNumber)
 		{
 			AssertOrder<T> (orderNumber, "Prepare");
@@ -91,6 +83,14 @@ namespace DeploySharp.Tests.Deployment.Core
 			Assert.AreEqual (expectedType, calls[ix].DeclaringType, 
 			                 string.Format("#{0} task {2} should have been {1}!", orderNumber, expectedType.Name, methodName));
 			Assert.AreEqual (methodName, calls[0].Name);
+		}
+
+		public class Task1 : IExecutable
+		{
+			public void Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+			}
 		}
 
 		public class Task2 : IExecutable
