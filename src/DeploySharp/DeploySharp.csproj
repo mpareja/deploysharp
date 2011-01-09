@@ -65,7 +65,6 @@
     <Compile Include="Core\ConfigurationRepository.cs" />
     <Compile Include="Core\DeploymentPlan.cs" />
     <Compile Include="Core\IExecutable.cs" />
-    <Compile Include="Core\IExecutableWithContext.cs" />
     <Compile Include="Core\IExecuteTasks.cs" />
     <Compile Include="Core\TargetConfig.cs" />
     <Compile Include="Core\TaskContext.cs" />

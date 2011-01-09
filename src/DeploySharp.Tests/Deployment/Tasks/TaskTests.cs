@@ -21,12 +21,10 @@ namespace Tests.Deployment.Tasks
 		public void ExtractWebsiteTask_ExtractsAllFiles_ToApplicationDirectoryBasedOnBuildNumber()
 		{
 			var task = Container.Get<ExtractWebsiteTask>();
+			task.Target = new TargetConfig ("beta.example.org", new DirectoryPathAbsolute (@"d:\domains\beta.example.org"));
+			task.Build = new BuildInfo ("2.14", "2010.12.8.1");
 
-			task.Execute (new TaskContext
-			{
-				Target = new TargetConfig ("beta.example.org", new DirectoryPathAbsolute (@"d:\domains\beta.example.org")),
-				Build = new BuildInfo ("2.14", "2010.12.8.1")
-			});
+			task.Execute ();
 
 			Container.GetMock<IExtractZip>().Verify (z => z.ExtractAllFiles ("website.zip",
 				@"d:\domains\beta.example.org-2.14.2010.12.8.1"));
@@ -36,15 +34,14 @@ namespace Tests.Deployment.Tasks
 		public void AppOfflineTask_CopiesAppOffline_ToCorrectLocation()
 		{
 			var task = Container.Get<AppOfflineTask>();
+			task.Target = new TargetConfig ("beta.example.org", new DirectoryPathAbsolute (@"d:\sites\beta.example.com"));
 
 			Container.GetMock<IWebServer>().Setup (server => server.GetLmsDirFor (It.IsAny<string>()))
 				.Returns (new DirectoryPathAbsolute (@"d:\sites\beta.example.com-2.14.2010.10.11.1\Lms"));
 			Container.GetMock<IWebServer> ().Setup (server => server.GetAeDirFor (It.IsAny<string> ()))
 				.Returns (new DirectoryPathAbsolute (@"d:\sites\beta.example.com-2.14.2010.10.11.1\Ae"));
 
-			task.Execute (new TaskContext {
-				Target = new TargetConfig ("beta.example.org", new DirectoryPathAbsolute (@"d:\sites\beta.example.com"))
-			});
+			task.Execute ();
 
 			var resourceMan = Container.GetMock<IAssemblyResourceManager> ();
 			resourceMan.Verify (x => x.SaveToDisk ("App_Offline.htm",

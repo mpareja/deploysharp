@@ -1,21 +1,23 @@
 ﻿using DeploySharp.Core;
 
-using DeploySharp;
-
 using NDepend.Helpers.FileDirectoryPath;
 
 namespace DeploySharp.Tasks
 {
-	public class ExtractWebsiteTask : IExecutableWithContext
+	public class ExtractWebsiteTask : IExecutable
 	{
 		public ExtractWebsiteTask(IExtractZip extractZip)
 		{
 			_extractZip = extractZip;
 		}
 
-		public void Execute(TaskContext context)
+		public TargetConfig Target { get; set; }
+
+		public BuildInfo Build { get; set; }
+
+		public void Execute()
 		{
-			var newAppDirectory = GetAppDirectory (context.Target.SiteRoot, context.Build).Path;
+			var newAppDirectory = GetAppDirectory (Target.SiteRoot, Build).Path;
 			_extractZip.ExtractAllFiles (WEBSITE_FILENAME, newAppDirectory);
 		}
 

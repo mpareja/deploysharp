@@ -29,7 +29,6 @@ namespace Tests.Deployment.Core
 		public void Teardown()
 		{
 			TestTask.ExecuteCalled = 0;
-			TestTask.Context = null;
 		}
 
 		[Test]
@@ -43,32 +42,20 @@ namespace Tests.Deployment.Core
 		}
 
 		[Test]
-		public void WhenExecuted_CallsTaskWithContext()
-		{
-			TestTask.Context = null;
-
-			_executor.ExecuteTask (typeof (TestTask));
-
-			Assert.AreSame (_context, TestTask.Context);
-		}
-
-		[Test]
 		public void Throws_IfAskedToExecuteANonExecutableTask()
 		{
 			Assert.Throws<InvalidOperationException> (() =>
 				_executor.ExecuteTask (typeof(TaskExecutorTests)));
 		}
 
-		public class TestTask : IExecutableWithContext
+		public class TestTask : IExecutable
 		{
-			public void Execute(TaskContext context)
+			public void Execute()
 			{
 				ExecuteCalled++;
-				Context = context;
 			}
 
 			public static int ExecuteCalled = 0;
-			public static TaskContext Context;
 		}
 
 		private TaskExecutor _executor;

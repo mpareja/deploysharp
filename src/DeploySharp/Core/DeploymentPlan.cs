@@ -18,13 +18,13 @@ namespace DeploySharp.Core
 				_executeTasks.ExecuteTask(taskType);
 		}
 
-		public IDeploymentPlanDsl ExecuteTask<T>() where T : IExecutableWithContext
+		public IDeploymentPlanDsl ExecuteTask<T>() where T : IExecutable
 		{
 			_taskQueue.Enqueue(typeof(T));
 			return this;
 		}
 
-		public IDeploymentPlanDsl ThenExecute<T>() where T : IExecutableWithContext
+		public IDeploymentPlanDsl ThenExecute<T>() where T : IExecutable
 		{
 			return ExecuteTask<T>();
 		}
@@ -35,6 +35,6 @@ namespace DeploySharp.Core
 
 	public interface IDeploymentPlanDsl
 	{
-		IDeploymentPlanDsl ThenExecute<T>() where T : IExecutableWithContext;
+		IDeploymentPlanDsl ThenExecute<T>() where T : IExecutable;
 	}
 }

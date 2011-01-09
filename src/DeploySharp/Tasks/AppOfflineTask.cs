@@ -5,7 +5,7 @@ using NDepend.Helpers.FileDirectoryPath;
 
 namespace DeploySharp.Tasks
 {
-	public class AppOfflineTask : IExecutableWithContext
+	public class AppOfflineTask : IExecutable
 	{
 		public AppOfflineTask(IWebServer webServer, IAssemblyResourceManager assemblyResourceManager)
 		{
@@ -13,10 +13,12 @@ namespace DeploySharp.Tasks
 			_assemblyResourceManager = assemblyResourceManager;
 		}
 
-		public void Execute(TaskContext context)
+		public TargetConfig Target { get; set; }
+
+		public void Execute()
 		{
-			ApplyAppOffline (_webServer.GetLmsDirFor (context.Target.SiteName));
-			ApplyAppOffline (_webServer.GetAeDirFor (context.Target.SiteName));
+			ApplyAppOffline (_webServer.GetLmsDirFor (Target.SiteName));
+			ApplyAppOffline (_webServer.GetAeDirFor (Target.SiteName));
 		}
 
 		private void ApplyAppOffline(DirectoryPathAbsolute sitePath)

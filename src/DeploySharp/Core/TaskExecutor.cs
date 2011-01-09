@@ -13,18 +13,11 @@ namespace DeploySharp.Core
 
 		public void ExecuteTask(Type taskType)
 		{
-			var instance = _locator.GetInstance (taskType);
-
-			var ewc = instance as IExecutableWithContext;
-			if (ewc != null)
-				ewc.Execute (_locator.GetInstance<TaskContext> ()); ;
-
-			var executable = instance as IExecutable;
-			if (executable != null)
-				executable.Execute();
-
-			if (ewc == null && executable == null)
+			var executable = _locator.GetInstance (taskType) as IExecutable;
+			if (executable == null)
 				throw new InvalidOperationException(taskType.Name + " type does not implement IExecutableWithContext or IExecutable.");
+
+			executable.Execute ();
 		}
 		private readonly IServiceLocator _locator;
 	}
