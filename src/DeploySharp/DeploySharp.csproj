@@ -77,6 +77,8 @@
     <Compile Include="Tasks\ApplyWebConfigFilesToSite.cs" />
     <Compile Include="Tasks\AppOfflineTask.cs" />
     <Compile Include="Tasks\ExtractWebsiteTask.cs" />
+    <Compile Include="Tasks\FileSystem\CopyFileTask.cs" />
+    <Compile Include="Tasks\FileSystem\DestinationExistsAction.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\App_Offline.htm" />
