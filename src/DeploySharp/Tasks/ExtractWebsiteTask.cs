@@ -15,10 +15,14 @@ namespace DeploySharp.Tasks
 
 		public BuildInfo Build { get; set; }
 
-		public void Execute()
+		public TaskResult Execute()
 		{
 			var newAppDirectory = GetAppDirectory (Target.SiteRoot, Build).Path;
 			_extractZip.ExtractAllFiles (WEBSITE_FILENAME, newAppDirectory);
+
+			var result = new TaskResult();
+			result.Success ("Testing result.");
+			return result;
 		}
 
 		public static DirectoryPathAbsolute GetAppDirectory(DirectoryPathAbsolute targetSiteRoot, BuildInfo build)

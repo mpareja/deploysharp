@@ -119,25 +119,28 @@ namespace DeploySharp.Tests.Deployment.Core
 
 		public class Task1 : IExecutable
 		{
-			public void Execute()
+			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
 			}
 		}
 
 		public class Task2 : IExecutable
 		{
-			public void Execute()
+			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
 			}
 		}
 
 		public class PreparableTask : IExecutable, IPreparable
 		{
-			public void Execute()
+			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
 			}
 
 			public TaskResult Prepare()
@@ -149,9 +152,10 @@ namespace DeploySharp.Tests.Deployment.Core
 
 		public class PreparableTask2 : IExecutable, IPreparable
 		{
-			public void Execute()
+			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
 			}
 
 			public TaskResult Prepare()
@@ -163,9 +167,10 @@ namespace DeploySharp.Tests.Deployment.Core
 
 		public class FailingPreparableTask : IExecutable, IPreparable
 		{
-			public void Execute()
+			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
 			}
 
 			public TaskResult Prepare()

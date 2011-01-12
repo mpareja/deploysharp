@@ -31,7 +31,7 @@ namespace DeploySharp.Tests.Deployment.Core
 
 		public class TestTask : IExecutable
 		{
-			public void Execute() { }
+			public TaskResult Execute() { return new TaskResult(); }
 		}
 	}
 }

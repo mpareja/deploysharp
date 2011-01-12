@@ -15,10 +15,14 @@ namespace DeploySharp.Tasks
 
 		public TargetConfig Target { get; set; }
 
-		public void Execute()
+		public TaskResult Execute()
 		{
 			ApplyAppOffline (_webServer.GetLmsDirFor (Target.SiteName));
 			ApplyAppOffline (_webServer.GetAeDirFor (Target.SiteName));
+
+			var result = new TaskResult();
+			result.Success ("AppOffline deployed successsfully");
+			return result;
 		}
 
 		private void ApplyAppOffline(DirectoryPathAbsolute sitePath)
