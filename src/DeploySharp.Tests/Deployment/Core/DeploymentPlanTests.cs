@@ -78,6 +78,21 @@ namespace DeploySharp.Tests.Deployment.Core
 			AssertTaskNeverPrepared<PreparableTask2>();
 		}
 
+		[Test]
+		public void RunningPlanWithFailure_AbortsPlanExecution()
+		{
+			_plan
+				.ExecuteTask<PreparableTask> ()
+				.ThenExecute<FailingPreparableTask> ()
+				.ThenExecute<PreparableTask2> ();
+
+			_plan.RunPlan();
+
+			AssertTaskExecutionOrder<PreparableTask> (1);
+			AssertTaskExecutionOrder<FailingPreparableTask> (2);
+			AssertTaskNeverExecuted<PreparableTask2> ();
+		}
+
 		private void AssertTaskPreparationOrder<T> (int orderNumber)
 		{
 			AssertOrder<T> (orderNumber, "Prepare");
@@ -90,6 +105,11 @@ namespace DeploySharp.Tests.Deployment.Core
 		{
 			AssertTaskNeverExecuted<T> ("Prepare");
 		}
+		private void AssertTaskNeverExecuted<T>()
+		{
+			AssertTaskNeverExecuted<T> ("Execute");
+		}
+
 		private void AssertTaskNeverExecuted<T>(string methodName)
 		{
 			var type = typeof(T);
@@ -170,7 +190,9 @@ namespace DeploySharp.Tests.Deployment.Core
 			public TaskResult Execute()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
-				return new TaskResult ();
+				var result = new TaskResult ();
+				result.Error ("my error");
+				return result;
 			}
 
 			public TaskResult Prepare()

@@ -31,7 +31,11 @@ namespace DeploySharp.Core
 			{
 				var executable = task as IExecutable;
 				if (executable != null)
-					executable.Execute();
+				{
+					var result = executable.Execute();
+					if (result.ContainsError ())
+						break;
+				}
 			}
 		}
 
