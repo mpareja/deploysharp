@@ -93,6 +93,15 @@ namespace DeploySharp.Tests.Deployment.Core
 			AssertTaskNeverExecuted<PreparableTask2> ();
 		}
 
+		[Test]
+		public void EnableConfiguringATask()
+		{
+			_plan
+				.ExecuteTask<TaskRequiringConfig>(t => t.Configured = true);
+
+			_plan.RunPreparations();
+		}
+
 		private void AssertTaskPreparationOrder<T> (int orderNumber)
 		{
 			AssertOrder<T> (orderNumber, "Prepare");
@@ -201,6 +210,25 @@ namespace DeploySharp.Tests.Deployment.Core
 				var result = new TaskResult ();
 				result.Error ("my error");
 				return result;
+			}
+		}
+
+		public class TaskRequiringConfig : IExecutable, IPreparable
+		{
+			public bool Configured = false;
+
+			public TaskResult Execute()
+			{
+				if (Configured == false)
+					Assert.Fail ("Expected task to be configured before being executed.");
+				return new TaskResult();
+			}
+
+			public TaskResult Prepare()
+			{
+				if (Configured == false)
+					Assert.Fail ("Expected task to be configured before being prepared.");
+				return new TaskResult ();
 			}
 		}
 

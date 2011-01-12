@@ -59,9 +59,18 @@ namespace DeploySharp.Core
 
 		public IDeploymentPlanDsl ExecuteTask<T>() where T : class, IExecutable
 		{
+			return ExecuteTask<T> (t => { });
+		}
+
+		public IDeploymentPlanDsl ExecuteTask<T>(Action<T> configure) where T : class, IExecutable
+		{
+			if (configure == null) throw new ArgumentNullException ("configure");
+
 			var task = _builder.BuildTask<T>();
 			if (task == null)
 				throw new InvalidOperationException("Unable to build task of type: " + typeof(T).FullName);
+
+			configure (task);
 
 			_taskQueue.Enqueue(task);
 			return this;
