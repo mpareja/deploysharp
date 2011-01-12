@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -45,7 +46,7 @@ namespace DeploySharp.Tests.Deployment.Core
 		{
 			_plan
 				.ExecuteTask<Task1>()
-				.ThenExecute<Task2>();
+				.ExecuteTask<Task2>();
 
 			_plan.RunPlan();
 
@@ -68,8 +69,8 @@ namespace DeploySharp.Tests.Deployment.Core
 		{
 			_plan
 				.ExecuteTask<PreparableTask>()
-				.ThenExecute<FailingPreparableTask>()
-				.ThenExecute<PreparableTask2> ();
+				.ExecuteTask<FailingPreparableTask>()
+				.ExecuteTask<PreparableTask2> ();
 
 			_plan.RunPreparations();
 
@@ -83,8 +84,8 @@ namespace DeploySharp.Tests.Deployment.Core
 		{
 			_plan
 				.ExecuteTask<PreparableTask> ()
-				.ThenExecute<FailingPreparableTask> ()
-				.ThenExecute<PreparableTask2> ();
+				.ExecuteTask<FailingPreparableTask> ()
+				.ExecuteTask<PreparableTask2> ();
 
 			_plan.RunPlan();
 

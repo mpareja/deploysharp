@@ -76,17 +76,12 @@ namespace DeploySharp.Core
 			return this;
 		}
 
-		public IDeploymentPlanDsl ThenExecute<T>() where T : class, IExecutable
-		{
-			return ExecuteTask<T>();
-		}
-
 		private readonly TaskBuilder _builder;
 		private readonly Queue<object> _taskQueue;
 	}
 
 	public interface IDeploymentPlanDsl
 	{
-		IDeploymentPlanDsl ThenExecute<T>() where T : class, IExecutable;
+		IDeploymentPlanDsl ExecuteTask<T>() where T : class, IExecutable;
 	}
 }
