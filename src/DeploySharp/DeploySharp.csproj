@@ -74,6 +74,7 @@
     <Compile Include="Infrastructure\IisExpressWebServer.cs" />
     <Compile Include="Infrastructure\IWebServer.cs" />
     <Compile Include="Infrastructure\KnownPaths.cs" />
+    <Compile Include="TaskResultReceivers\NullTaskResultReceiver.cs" />
     <Compile Include="Tasks\ApplyWebConfigFilesToSite.cs" />
     <Compile Include="Tasks\AppOfflineTask.cs" />
     <Compile Include="Tasks\ExtractWebsiteTask.cs" />

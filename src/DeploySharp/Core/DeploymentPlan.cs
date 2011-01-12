@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using DeploySharp.TaskResultReceivers;
+
 namespace DeploySharp.Core
 {
 	public class DeploymentPlan : IDeploymentPlanDsl
@@ -13,12 +15,20 @@ namespace DeploySharp.Core
 
 		public void RunPreparations()
 		{
+			RunPreparations(new NullTaskResultReceiver());
+		}
+
+		public void RunPreparations(ITaskResultReceiver receiver)
+		{
+			if (receiver == null) throw new ArgumentNullException ("receiver");
+
 			foreach (var task in _taskQueue)
 			{
 				var preparable = task as IPreparable;
 				if (preparable != null)
 				{
 					var result = preparable.Prepare ();
+					result.SendSubResultsTo (receiver);
 					if (result.ContainsError ())
 						break;
 				}
@@ -27,12 +37,20 @@ namespace DeploySharp.Core
 
 		public void RunPlan()
 		{
+			RunPlan (new NullTaskResultReceiver());
+		}
+
+		public void RunPlan(ITaskResultReceiver receiver)
+		{
+			if (receiver == null) throw new ArgumentNullException ("receiver");
+
 			foreach (var task in _taskQueue)
 			{
 				var executable = task as IExecutable;
 				if (executable != null)
 				{
 					var result = executable.Execute();
+					result.SendSubResultsTo (receiver);
 					if (result.ContainsError ())
 						break;
 				}
