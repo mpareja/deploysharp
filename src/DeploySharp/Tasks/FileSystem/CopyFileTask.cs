@@ -84,7 +84,7 @@ namespace DeploySharp.Tasks.FileSystem
 				
 				case DestinationExistsAction.Overwrite:
 					if (destInfo.Exists && destInfo.IsReadOnly)
-						result.Error("{0} exists and is readonly.");
+						result.Error("{0} exists and is readonly.", Destination);
 					break;
 				
 				case DestinationExistsAction.OverwriteEvenReadOnly:
