@@ -17,7 +17,7 @@ namespace DeploySharp.Tasks.FileSystem
 
 		public TaskResult Prepare()
 		{
-			var result = new TaskResult();
+			var result = new TaskResult ();
 			if (File.Exists (Source) == false)
 			{
 				result.Error ("Source file does not exist!");
@@ -36,12 +36,18 @@ namespace DeploySharp.Tasks.FileSystem
 			{
 				_exactFileExists = false;
 			}
+
+			if (_exactFileExists)
+				return result;
+
+            DetectAndAppendCopyErrorsToResult (result, dest);
 			return result;
 		}
 
 		public TaskResult Execute()
 		{
 			var result = new TaskResult();
+			result.Success ("Copying {0} to {1}. ", Source, Destination);
 			if (_exactFileExists)
 			{
 				result.Success (Destination + " already exists with matching file contents.");
@@ -49,7 +55,8 @@ namespace DeploySharp.Tasks.FileSystem
 			}
 
 			var destInfo = new FileInfo (Destination);
-			if (FileCopyShouldSucceed (result, destInfo) == false)
+			DetectAndAppendCopyErrorsToResult (result, destInfo);
+			if (result.ContainsError())
 				return result;
 
 			if (destInfo.Exists && destInfo.IsReadOnly)
@@ -66,7 +73,7 @@ namespace DeploySharp.Tasks.FileSystem
 			return result;
 		}
 
-		private bool FileCopyShouldSucceed(TaskResult result, FileInfo destInfo)
+		private void DetectAndAppendCopyErrorsToResult(TaskResult result, FileInfo destInfo)
 		{
 			switch (OnDestinationExistsWithDiffContent)
 			{
@@ -88,7 +95,6 @@ namespace DeploySharp.Tasks.FileSystem
 					              OnDestinationExistsWithDiffContent);
 					break;
 			}
-			return result.ContainsError();
 		}
 
 		private byte[] GetMd5 (string filepath)
