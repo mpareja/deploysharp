@@ -10,9 +10,19 @@ namespace DeploySharp.Core
 			_subResults.Enqueue (new SubResult (SubResultType.Error, message));
 		}
 
+		public void Error (string message, params string[] args)
+		{
+			Error (string.Format (message, args));
+		}
+
 		public void Success (string message)
 		{
 			_subResults.Enqueue (new SubResult (SubResultType.Success, message));
+		}
+
+		public void Success(string message, params string[] args)
+		{
+			Success (string.Format (message, args));
 		}
 
 		public bool ContainsError()
