@@ -83,5 +83,7 @@ namespace DeploySharp.Core
 	public interface IDeploymentPlanDsl
 	{
 		IDeploymentPlanDsl ExecuteTask<T>() where T : class, IExecutable;
+
+		IDeploymentPlanDsl ExecuteTask<T> (Action<T> configure) where T : class, IExecutable;
 	}
 }
