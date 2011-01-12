@@ -43,57 +43,57 @@ namespace DeploySharp.Tests.Deployment.Core
 		}
 
 		[Test]
-		public void GivenAnErrorResult_WhenVisistingResults_ReportError()
+		public void GivenAnErrorResult_ReportError()
 		{
 			var result = new TaskResult ();
 			result.Error ("my error");
 
-			var visitor = new TestTaskResultVisitor ();
-			result.VisitSubResults (visitor);
+			var receiver = new TestTaskResultReceiver ();
+			result.SendSubResultsTo (receiver);
 
-			visitor.AssertResultCount (1);
-			visitor.AssertMessageAndTypeEquals (1, "Error", "my error");
+			receiver.AssertResultCount (1);
+			receiver.AssertMessageAndTypeEquals (1, "Error", "my error");
 		}
 
 		[Test]
-		public void GivenMultipleErrorResults_WhenVisistingResults_ReportAllErrors()
+		public void GivenMultipleErrorResults_ReportAllErrors()
 		{
 			var result = new TaskResult ();
 			result.Error ("my error");
 			result.Error ("my error2");
 
-			var visitor = new TestTaskResultVisitor ();
-			result.VisitSubResults (visitor);
+			var receiver = new TestTaskResultReceiver ();
+			result.SendSubResultsTo (receiver);
 
-			visitor.AssertResultCount (2);
-			visitor.AssertMessageAndTypeEquals (1, "Error", "my error");
-			visitor.AssertMessageAndTypeEquals (2, "Error", "my error2");
+			receiver.AssertResultCount (2);
+			receiver.AssertMessageAndTypeEquals (1, "Error", "my error");
+			receiver.AssertMessageAndTypeEquals (2, "Error", "my error2");
 		}
 
 		[Test]
-		public void GivenAnErrorAndSuccess_WhenVisitingResults_ReportBoth()
+		public void GivenAnErrorAndSuccess_ReportBoth()
 		{
 			var result = new TaskResult ();
 			result.Success ("my success");
 			result.Error ("my error");
 
-			var visitor = new TestTaskResultVisitor ();
-			result.VisitSubResults (visitor);
+			var receiver = new TestTaskResultReceiver ();
+			result.SendSubResultsTo (receiver);
 
-			visitor.AssertResultCount (2);
-			visitor.AssertMessageAndTypeEquals (1, "Success", "my success");
-			visitor.AssertMessageAndTypeEquals (2, "Error", "my error");
+			receiver.AssertResultCount (2);
+			receiver.AssertMessageAndTypeEquals (1, "Success", "my success");
+			receiver.AssertMessageAndTypeEquals (2, "Error", "my error");
 		}
 	}
 
-	public class TestTaskResultVisitor : ITaskResultVisitor
+	public class TestTaskResultReceiver : ITaskResultReceiver
 	{
-		public void VisitError (string message)
+		public void ReceiveError (string message)
 		{
 			_messages.Enqueue (new Results("Error", message));
 		}
 
-		public void VisitSuccess(string message)
+		public void ReceiveSuccess(string message)
 		{
 			_messages.Enqueue (new Results ("Success", message));
 		}
@@ -128,41 +128,41 @@ namespace DeploySharp.Tests.Deployment.Core
 	}
 
 	[TestFixture]
-	public class TestTaskResultVisitorTests
+	public class TestTaskResultReceiverTests
 	{
 		[Test]
 		public void WhenNoResultsAdded_CountIsZero()
 		{
-			var visitor = new TestTaskResultVisitor ();
-			visitor.AssertResultCount (0);
+			var receiver = new TestTaskResultReceiver ();
+			receiver.AssertResultCount (0);
 		}
 
 		[Test]
 		public void WhenResultIsAdded_TheCountIncreases()
 		{
-			var visitor  = new TestTaskResultVisitor();
-			visitor.VisitError ("an error");
+			var receiver  = new TestTaskResultReceiver();
+			receiver.ReceiveError ("an error");
 
-			visitor.AssertResultCount (1);
+			receiver.AssertResultCount (1);
 		}
 
 		[Test]
 		public void WhenMultipleResultsAdded_CountMatches()
 		{
-			var visitor = new TestTaskResultVisitor ();
-			visitor.VisitError ("an error");
-			visitor.VisitError ("an error2");
+			var receiver = new TestTaskResultReceiver ();
+			receiver.ReceiveError ("an error");
+			receiver.ReceiveError ("an error2");
 
-			visitor.AssertResultCount (2);
+			receiver.AssertResultCount (2);
 		}
 
 		[Test]
 		public void WhenErrorAdded_MessageMatches()
 		{
-			var visitor = new TestTaskResultVisitor ();
-			visitor.VisitError ("an error");
+			var receiver = new TestTaskResultReceiver ();
+			receiver.ReceiveError ("an error");
 
-			visitor.AssertMessageAndTypeEquals (1, "Error", "an error");
+			receiver.AssertMessageAndTypeEquals (1, "Error", "an error");
 		}
 	}
 }

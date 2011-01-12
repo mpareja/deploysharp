@@ -30,18 +30,18 @@ namespace DeploySharp.Core
 			return _subResults.Any (sr => sr.Type == SubResultType.Error);
 		}
 
-		public void VisitSubResults (ITaskResultVisitor visitor)
+		public void SendSubResultsTo (ITaskResultReceiver receiver)
 		{
 			foreach (var result in _subResults)
 			{
 				switch (result.Type)
 				{
 					case SubResultType.Error:
-						visitor.VisitError (result.Message);
+						receiver.ReceiveError (result.Message);
 						break;
 
 					case SubResultType.Success:
-						visitor.VisitSuccess (result.Message);
+						receiver.ReceiveSuccess (result.Message);
 						break;
 				}
 			}
