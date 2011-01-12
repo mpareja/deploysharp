@@ -17,7 +17,11 @@ namespace DeploySharp.Core
 			{
 				var preparable = task as IPreparable;
 				if (preparable != null)
-					preparable.Prepare ();
+				{
+					var result = preparable.Prepare ();
+					if (result.ContainsError ())
+						break;
+				}
 			}
 		}
 

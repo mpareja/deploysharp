@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 using CommonServiceLocator.NinjectAdapter;
@@ -62,6 +63,21 @@ namespace DeploySharp.Tests.Deployment.Core
 			AssertTaskPreparationOrder<PreparableTask> (1);
 		}
 
+		[Test]
+		public void RunningPreparationsWithFailure_AbortsPrepExecution()
+		{
+			_plan
+				.ExecuteTask<PreparableTask>()
+				.ThenExecute<FailingPreparableTask>()
+				.ThenExecute<PreparableTask2> ();
+
+			_plan.RunPreparations();
+
+			AssertTaskPreparationOrder<PreparableTask> (1);
+			AssertTaskPreparationOrder<FailingPreparableTask> (2);
+			AssertTaskNeverPrepared<PreparableTask2>();
+		}
+
 		private void AssertTaskPreparationOrder<T> (int orderNumber)
 		{
 			AssertOrder<T> (orderNumber, "Prepare");
@@ -69,6 +85,22 @@ namespace DeploySharp.Tests.Deployment.Core
 		private void AssertTaskExecutionOrder<T> (int orderNumber)
 		{
 			AssertOrder<T> (orderNumber, "Execute");
+		}
+		private void AssertTaskNeverPrepared<T>()
+		{
+			AssertTaskNeverExecuted<T> ("Prepare");
+		}
+		private void AssertTaskNeverExecuted<T>(string methodName)
+		{
+			var type = typeof(T);
+			var typeExecuted = (
+					from c in ExecuteOrderHelper.Calls()
+			        where c.Name == methodName && c.DeclaringType == type
+			        select c).Any();
+
+			Assert.IsFalse (typeExecuted, 
+				string.Format("{0} should not have been called for task {1}!",
+				methodName, type.Name));
 		}
 		private void AssertOrder<T> (int orderNumber, string methodName)
 		{
@@ -108,9 +140,40 @@ namespace DeploySharp.Tests.Deployment.Core
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
 			}
 
-			public void Prepare()
+			public TaskResult Prepare()
 			{
 				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Prepare"));
+				return new TaskResult();
+			}
+		}
+
+		public class PreparableTask2 : IExecutable, IPreparable
+		{
+			public void Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+			}
+
+			public TaskResult Prepare()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Prepare"));
+				return new TaskResult ();
+			}
+		}
+
+		public class FailingPreparableTask : IExecutable, IPreparable
+		{
+			public void Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+			}
+
+			public TaskResult Prepare()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Prepare"));
+				var result = new TaskResult ();
+				result.Error ("my error");
+				return result;
 			}
 		}
 
@@ -138,4 +201,5 @@ namespace DeploySharp.Tests.Deployment.Core
 
 		private DeploymentPlan _plan;
 	}
+
 }
