@@ -15,6 +15,16 @@ namespace DeploySharp.Core
 			Error (string.Format (message, args));
 		}
 
+		public void Warning (string message)
+		{
+			_subResults.Enqueue (new SubResult (SubResultType.Warning, message));
+		}
+
+		public void Warning(string message, params string[] args)
+		{
+			Warning (string.Format (message, args));
+		}
+
 		public void Success (string message)
 		{
 			_subResults.Enqueue (new SubResult (SubResultType.Success, message));
@@ -36,12 +46,14 @@ namespace DeploySharp.Core
 			{
 				switch (result.Type)
 				{
-					case SubResultType.Error:
-						receiver.ReceiveError (result.Message);
-						break;
-
 					case SubResultType.Success:
 						receiver.ReceiveSuccess (result.Message);
+						break;
+					case SubResultType.Warning:
+						receiver.ReceiveWarning (result.Message);
+						break;
+					case SubResultType.Error:
+						receiver.ReceiveError (result.Message);
 						break;
 				}
 			}
@@ -61,8 +73,9 @@ namespace DeploySharp.Core
 
 		private enum SubResultType
 		{
-			Error,
-			Success
+			Success,
+			Warning,
+			Error
 		}
 
 		private readonly Queue<SubResult> _subResults = new Queue<SubResult>();

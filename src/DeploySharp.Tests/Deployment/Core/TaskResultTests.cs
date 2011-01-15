@@ -88,14 +88,19 @@ namespace DeploySharp.Tests.Deployment.Core
 
 	public class TestTaskResultReceiver : ITaskResultReceiver
 	{
-		public void ReceiveError (string message)
-		{
-			_messages.Enqueue (new Results("Error", message));
-		}
-
 		public void ReceiveSuccess(string message)
 		{
 			_messages.Enqueue (new Results ("Success", message));
+		}
+
+		public void ReceiveWarning(string message)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void ReceiveError (string message)
+		{
+			_messages.Enqueue (new Results("Error", message));
 		}
 
 		public void AssertResultCount (int expectedCount)
