@@ -5,7 +5,7 @@ using DeploySharp.TaskResultReceivers;
 
 namespace DeploySharp.Core
 {
-	public class DeploymentPlan : IDeploymentPlanDsl
+	public class DeploymentPlan : IDeploymentPlanDsl, IDisposable
 	{
 		public DeploymentPlan(TaskBuilder builder)
 		{
@@ -55,6 +55,8 @@ namespace DeploySharp.Core
 						break;
 				}
 			}
+
+			DisposeTasks();
 		}
 
 		public IDeploymentPlanDsl ExecuteTask<T>() where T : class, IExecutable
@@ -74,6 +76,21 @@ namespace DeploySharp.Core
 
 			_taskQueue.Enqueue(task);
 			return this;
+		}
+
+		public void Dispose()
+		{
+			DisposeTasks();
+		}
+
+		private void DisposeTasks()
+		{
+			foreach (var task in _taskQueue)
+			{
+				var disposable = task as IDisposable;
+				if (disposable != null)
+					disposable.Dispose ();
+			}
 		}
 
 		private readonly TaskBuilder _builder;

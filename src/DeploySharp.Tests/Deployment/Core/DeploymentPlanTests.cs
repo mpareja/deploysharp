@@ -95,6 +95,17 @@ namespace DeploySharp.Tests.Deployment.Core
 		}
 
 		[Test]
+		public void DisposeDispoableTasks()
+		{
+			_plan.ExecuteTask<DisposableTask>();
+
+			_plan.RunPlan();
+
+			AssertTaskExecutionOrder<DisposableTask> (1);
+			AssertOrder<DisposableTask> (2, "Dispose");
+		}
+
+		[Test]
 		public void EnableConfiguringATask()
 		{
 			_plan
@@ -231,6 +242,20 @@ namespace DeploySharp.Tests.Deployment.Core
 				if (Configured == false)
 					Assert.Fail ("Expected task to be configured before being prepared.");
 				return new TaskResult ();
+			}
+		}
+
+		public class DisposableTask : IExecutable, IDisposable
+		{
+			public TaskResult Execute()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Execute"));
+				return new TaskResult ();
+			}
+
+			public void Dispose()
+			{
+				ExecuteOrderHelper.LogCall (GetType ().GetMethod ("Dispose"));
 			}
 		}
 
