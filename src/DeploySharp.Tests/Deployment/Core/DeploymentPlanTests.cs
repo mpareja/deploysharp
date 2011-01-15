@@ -142,9 +142,10 @@ namespace DeploySharp.Tests.Deployment.Core
 
 			var ix = orderNumber - 1; // make it zero based
 			var expectedType = typeof (T);
-			Assert.AreEqual (expectedType, calls[ix].DeclaringType, 
+			var actual = calls[ix];
+			Assert.AreEqual (expectedType, actual.DeclaringType, 
 			                 string.Format("#{0} task {2} should have been {1}!", orderNumber, expectedType.Name, methodName));
-			Assert.AreEqual (methodName, calls[0].Name);
+			Assert.AreEqual (methodName, actual.Name);
 		}
 
 		public class Task1 : IExecutable
