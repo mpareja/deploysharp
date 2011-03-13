@@ -84,11 +84,9 @@
     <Compile Include="..\..\SolutionVersion.cs">
       <Link>SolutionVersion.cs</Link>
     </Compile>
-    <Compile Include="Deployment\Core\ConfigurationRepositoryTests.cs" />
     <Compile Include="Deployment\Core\DeploymentPlanTests.cs" />
     <Compile Include="Deployment\Core\TaskBuilderTests.cs" />
     <Compile Include="Deployment\Core\TaskResultTests.cs" />
-    <Compile Include="Deployment\Tasks\TaskTests.cs" />
     <Compile Include="TestFixtureBase.cs" />
     <Compile Include="TempDirectoryPathAbsolute.cs" />
   </ItemGroup>
