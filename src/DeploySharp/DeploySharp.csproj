@@ -71,6 +71,7 @@
     <Compile Include="TaskResultReceivers\ConsoleTaskResultReceiver.cs" />
     <Compile Include="TaskResultReceivers\NullTaskResultReceiver.cs" />
     <Compile Include="Tasks\FileSystem\ExtractZipFileTask.cs" />
+    <Compile Include="Tasks\FlowControl\PauseTask.cs" />
     <Compile Include="Tasks\Ssrs\DeploySsrsReportTask.cs" />
     <Compile Include="Tasks\Ssrs\SsrsTask.cs" />
     <Compile Include="Tasks\Ssrs\VerifySsrsConnectionTask.cs" />

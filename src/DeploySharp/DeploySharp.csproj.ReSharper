@@ -1,5 +1,6 @@
 <Configuration>
   <NamespaceFolders>
     <SkipFolder>52B037DB-1388-4669-8478-F908F024C00D/d:Tasks/d:FileSystem</SkipFolder>
+    <SkipFolder>52B037DB-1388-4669-8478-F908F024C00D/d:Tasks/d:FlowControl</SkipFolder>
   </NamespaceFolders>
 </Configuration>
