@@ -20,6 +20,8 @@ namespace Tests
 			Directory.CreateDirectory (_path.Path);
 		}
 
+		public string Path { get { return _path.Path; } }
+
 		public DirectoryPathAbsolute AsDir { get { return _path; } }
 
 		public void Dispose()

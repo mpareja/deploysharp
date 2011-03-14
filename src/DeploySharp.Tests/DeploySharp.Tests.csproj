@@ -79,6 +79,7 @@
     <Compile Include="Deployment\Core\DeploymentPlanTests.cs" />
     <Compile Include="Deployment\Core\TaskBuilderTests.cs" />
     <Compile Include="Deployment\Core\TaskResultTests.cs" />
+    <Compile Include="Tasks\ExtractZipFileTaskTests.cs" />
     <Compile Include="TestFixtureBase.cs" />
     <Compile Include="TempDirectoryPathAbsolute.cs" />
   </ItemGroup>
@@ -88,12 +89,17 @@
       <Name>DeploySharp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TestFile.zip">
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+    <Exec Command="xcopy /E /Y /D Resources\TestFile.zip $(OutputPath)\Resources\" />
+  </Target>
 </Project>

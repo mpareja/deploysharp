@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\SharpZipLib\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\..\lib\DotNetZip\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="NDepend.Helpers.FileDirectoryPath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -70,6 +70,7 @@
     <Compile Include="Infrastructure\SsrsWebServiceReference.cs" />
     <Compile Include="TaskResultReceivers\ConsoleTaskResultReceiver.cs" />
     <Compile Include="TaskResultReceivers\NullTaskResultReceiver.cs" />
+    <Compile Include="Tasks\FileSystem\ExtractZipFileTask.cs" />
     <Compile Include="Tasks\Ssrs\DeploySsrsReportTask.cs" />
     <Compile Include="Tasks\Ssrs\SsrsTask.cs" />
     <Compile Include="Tasks\Ssrs\VerifySsrsConnectionTask.cs" />
