@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-
 using DeploySharp.Core;
 
-namespace DeploySharp.Tasks.FileSystem
+namespace DeploySharp.Tasks
 {
 	public class CopyFileTask : IExecutable, IPreparable
 	{

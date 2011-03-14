@@ -1,4 +1,4 @@
-﻿namespace DeploySharp.Tasks.FileSystem
+﻿namespace DeploySharp.Tasks
 {
 	public enum DestinationExistsAction
 	{
