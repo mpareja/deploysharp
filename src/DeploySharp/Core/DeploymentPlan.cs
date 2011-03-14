@@ -7,10 +7,16 @@ namespace DeploySharp.Core
 {
 	public class DeploymentPlan : IDeploymentPlanDsl, IDisposable
 	{
-		public DeploymentPlan(TaskBuilder builder)
+		public DeploymentPlan()
 		{
-			_builder = builder;
-			_taskQueue = new Queue<object>();
+			_builder = new TaskBuilder();
+			_taskQueue = new Queue<object> ();
+		}
+
+		public DeploymentPlan(IServiceProvider serviceProvider)
+		{
+			_builder = new TaskBuilder (serviceProvider);
+			_taskQueue = new Queue<object> ();
 		}
 
 		public void RunPreparations()

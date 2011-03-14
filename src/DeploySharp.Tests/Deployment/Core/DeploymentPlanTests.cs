@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using CommonServiceLocator.NinjectAdapter;
-
 using DeploySharp.Core;
-
-using Ninject;
 
 using NUnit.Framework;
 
@@ -19,8 +15,7 @@ namespace DeploySharp.Tests.Deployment.Core
 		[SetUp]
 		public void Setup()
 		{
-			var locator = new NinjectServiceLocator (new StandardKernel ());
-			_plan = new DeploymentPlan (new TaskBuilder (locator));
+			_plan = new DeploymentPlan ();
 
 			ExecuteOrderHelper.Reset ();
 		}
