@@ -1,9 +1,7 @@
-using System;
 using System.IO;
 using System.Web.Services.Protocols;
 
 using DeploySharp.Core;
-using DeploySharp.Infrastructure;
 using DeploySharp.ReportWebService;
 
 using NDepend.Helpers.FileDirectoryPath;
@@ -43,7 +41,7 @@ namespace DeploySharp.Tasks.Ssrs
 		{
 			var results = new TaskResult();
 
-			Warning[] warnings = null;
+			Warning[] warnings;
 			var name = ReportRdl.FileNameWithoutExtension;
 			var rs = GetWsClient ();
 			try

@@ -1,8 +1,6 @@
 using System;
 
-using NDepend.Helpers.FileDirectoryPath;
-
-namespace DeploySharp.Infrastructure
+namespace NDepend.Helpers.FileDirectoryPath
 {
 	public static class FileDirectoryPathHelpers
 	{
