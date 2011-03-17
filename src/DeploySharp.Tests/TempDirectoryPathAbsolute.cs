@@ -20,6 +20,18 @@ namespace Tests
 			Directory.CreateDirectory (_path.Path);
 		}
 
+		/// <summary>
+		/// Creates a temporary file with the specified contents.
+		/// </summary>
+		/// <param name="contents"></param>
+		/// <returns>The filename of the temporary file.</returns>
+		public string SaveToTempFile(string contents)
+		{
+			var filename = System.IO.Path.Combine (Path, Guid.NewGuid().ToString());
+			File.WriteAllText (filename, contents);
+			return filename;
+		}
+
 		public string Path { get { return _path.Path; } }
 
 		public DirectoryPathAbsolute AsDir { get { return _path; } }
