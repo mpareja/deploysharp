@@ -1,8 +1,9 @@
 using System.IO;
 using DeploySharp.Tasks;
 using NUnit.Framework;
+using Tests;
 
-namespace Tests.Tasks
+namespace DeploySharp.Tests.Tasks
 { 
 	[TestFixture]
 	public class ExtractZipFileTaskTests
@@ -16,10 +17,7 @@ namespace Tests.Tasks
 					SourceZip = "Resources/TestFile.zip",
 					DestinationDir = tempdir.Path
 				};
-				var result = task.Execute();
-
-				Assert.NotNull(result);
-				Assert.False(result.ContainsError());
+				task.Execute().AssertNoErrors();
 
 				var expected = Path.Combine(tempdir.Path, "TestFile.txt");
 				Assert.True(File.Exists(expected));

@@ -80,6 +80,7 @@
     <Compile Include="Deployment\Core\TaskBuilderTests.cs" />
     <Compile Include="Deployment\Core\TaskResultTests.cs" />
     <Compile Include="Tasks\ExtractZipFileTaskTests.cs" />
+    <Compile Include="Tasks\TaskResultAssert.cs" />
     <Compile Include="TestFixtureBase.cs" />
     <Compile Include="TempDirectoryPathAbsolute.cs" />
   </ItemGroup>
