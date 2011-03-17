@@ -60,6 +60,7 @@
       <HintPath>..\..\lib\Shoudly\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -79,6 +80,7 @@
     <Compile Include="Deployment\Core\DeploymentPlanTests.cs" />
     <Compile Include="Deployment\Core\TaskBuilderTests.cs" />
     <Compile Include="Deployment\Core\TaskResultTests.cs" />
+    <Compile Include="Tasks\ExecuteSqlScriptsTaskTests.cs" />
     <Compile Include="Tasks\ExtractZipFileTaskTests.cs" />
     <Compile Include="Tasks\TaskResultAssert.cs" />
     <Compile Include="TestFixtureBase.cs" />
@@ -91,6 +93,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Resources\TestFile.zip">
     </None>
   </ItemGroup>
