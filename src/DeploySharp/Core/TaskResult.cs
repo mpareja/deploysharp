@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DeploySharp.Core
@@ -13,6 +14,11 @@ namespace DeploySharp.Core
 		public void Error (string message, params string[] args)
 		{
 			Error (string.Format (message, args));
+		}
+
+		public void Error (Exception exception, string message, params string[] args)
+		{
+			Error(message + "\n--- Exception Details ---" + exception, args);
 		}
 
 		public void Warning (string message)
