@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text;
-
 using DeploySharp.Core;
 using Microsoft.SqlServer.Management.Smo;
 using Microsoft.SqlServer.Management.Common;
 
-namespace DeploySharp.Tasks.SqlServer
+namespace DeploySharp.Tasks
 {
 	public class ExecuteSqlScriptsTask : IExecutable, IPreparable, IDisposable
 	{
