@@ -5,6 +5,16 @@ namespace DeploySharp.Tests.Tasks
 {
 	public static class TaskResultAssert
 	{
+		public static void PrepareAndAssertNoErrors(this IPreparable task)
+		{
+			task.Prepare().AssertNoErrors();
+		}
+
+		public static void ExecuteAndAssertNoErrors(this IExecutable task)
+		{
+			task.Execute().AssertNoErrors ();
+		}
+
 		public static void AssertNoErrors(this TaskResult result)
 		{
 			Assert.NotNull (result, "Task results should not be null.");

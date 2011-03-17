@@ -17,7 +17,7 @@ namespace DeploySharp.Tasks
 		public string Password { get; set; }
 		public IEnumerable<string> ScriptFiles { get; set; }
 
-		public TaskResult Prepare()
+		TaskResult IPreparable.Prepare()
 		{
 			var results = new TaskResult ();
 			if (_foundSmoAssembly == false)
@@ -46,7 +46,7 @@ namespace DeploySharp.Tasks
 			return results;
 		}
 
-		public virtual TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			var result = new TaskResult();
 			result.Success("Executing scripts on server '{0}' database '{1}'.", Server, Database);
@@ -106,7 +106,7 @@ namespace DeploySharp.Tasks
             return conn;
         }
 
-		public void Dispose()
+		void IDisposable.Dispose()
 		{
 			if (_conn != null)
 			{

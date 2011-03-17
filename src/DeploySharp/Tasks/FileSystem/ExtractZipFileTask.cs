@@ -9,7 +9,7 @@ namespace DeploySharp.Tasks
 		public string SourceZip { get; set; }
 		public string DestinationDir { get; set; }
 
-		public TaskResult Prepare()
+		TaskResult IPreparable.Prepare()
 		{
 			var result = new TaskResult ();
 			if (File.Exists (SourceZip) == false)
@@ -18,7 +18,7 @@ namespace DeploySharp.Tasks
 			return result;
 		}
 
-		public TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			using (var zip = ZipFile.Read(SourceZip))
 			{

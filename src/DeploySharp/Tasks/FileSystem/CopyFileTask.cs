@@ -14,7 +14,7 @@ namespace DeploySharp.Tasks
 
 		private bool _exactFileExists;
 
-		public TaskResult Prepare()
+		TaskResult IPreparable.Prepare()
 		{
 			var result = new TaskResult ();
 			if (File.Exists (Source) == false)
@@ -43,7 +43,7 @@ namespace DeploySharp.Tasks
 			return result;
 		}
 
-		public TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			var result = new TaskResult();
 			result.Success ("Copying {0} to {1}. ", Source, Destination);

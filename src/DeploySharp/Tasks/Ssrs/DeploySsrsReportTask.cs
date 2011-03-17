@@ -14,7 +14,7 @@ namespace DeploySharp.Tasks.Ssrs
 		public DirectoryPathRelative DestinationPathOnServer { get; set; }
 		public bool DeleteReportFirst { get; set; }
 
-		public TaskResult Prepare()
+		TaskResult IPreparable.Prepare()
 		{
 			var results = new TaskResult();
 			var rdlPath = ReportRdl.MakeAbsoluteAssumeCurrentDir();
@@ -37,7 +37,7 @@ namespace DeploySharp.Tasks.Ssrs
 			return results;
 		}
 
-		public TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			var results = new TaskResult();
 

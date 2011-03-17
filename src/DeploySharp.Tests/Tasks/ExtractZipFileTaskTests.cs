@@ -17,7 +17,8 @@ namespace DeploySharp.Tests.Tasks
 					SourceZip = "Resources/TestFile.zip",
 					DestinationDir = tempdir.Path
 				};
-				task.Execute().AssertNoErrors();
+				task.PrepareAndAssertNoErrors ();
+				task.ExecuteAndAssertNoErrors ();
 
 				var expected = Path.Combine(tempdir.Path, "TestFile.txt");
 				Assert.True(File.Exists(expected));

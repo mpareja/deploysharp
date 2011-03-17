@@ -13,7 +13,7 @@ namespace DeploySharp.Tasks
 			set { _pauseEnabled = value; }
 		}
 
-		public TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			if (PauseEnabled)
 			{

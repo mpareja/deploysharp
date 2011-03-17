@@ -49,8 +49,8 @@ namespace DeploySharp.Tests.Tasks
 
 				task.ScriptFiles = new[] { file };
 
-				task.Prepare().AssertNoErrors ();
-				task.Execute().AssertNoErrors ();
+				task.PrepareAndAssertNoErrors();
+				task.ExecuteAndAssertNoErrors();
 			}
 			AssertQueryReturns("select my_id from " + _table, 2);
 		}
@@ -72,8 +72,8 @@ namespace DeploySharp.Tests.Tasks
 
 				task.ScriptFiles = new[] { file1, file2 };
 
-				task.Prepare ().AssertNoErrors ();
-				task.Execute ().AssertNoErrors ();
+				task.PrepareAndAssertNoErrors ();
+				task.ExecuteAndAssertNoErrors ();
 			}
 
 			using (var connection = GetConnection ())
@@ -111,8 +111,7 @@ namespace DeploySharp.Tests.Tasks
 		private SqlConnection GetConnection() 
 		{
 			var task = GetTaskWithCredentials();
-			var builder = new SqlConnectionStringBuilder ()
-			{
+			var builder = new SqlConnectionStringBuilder {
 				DataSource = task.Server,
 				InitialCatalog = task.Database,
 				UserID = task.Username,

@@ -6,7 +6,7 @@ namespace DeploySharp.Tasks.Ssrs
 {
 	public class VerifySsrsConnectionTask : SsrsTask, IPreparable, IExecutable
 	{
-		public TaskResult Prepare()
+		TaskResult IPreparable.Prepare()
 		{
 			var result = CheckConnectivity();
 			if (result.ContainsError () == false)
@@ -15,7 +15,7 @@ namespace DeploySharp.Tasks.Ssrs
 			return result;
 		}
 
-		public TaskResult Execute()
+		TaskResult IExecutable.Execute()
 		{
 			if (_verified)
 				return new TaskResult ();
