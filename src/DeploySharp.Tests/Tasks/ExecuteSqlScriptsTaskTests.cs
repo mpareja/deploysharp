@@ -11,6 +11,21 @@ namespace DeploySharp.Tests.Tasks
 	[TestFixture]
 	public class ExecuteSqlScriptsTaskTests
 	{
+		[TestFixtureSetUp]
+		public void VerifyDatabaseConnectivity()
+		{
+			try
+			{
+				using (GetOpenConnection()) { }
+			}
+			catch (Exception e)
+			{
+				System.IO.File.WriteAllText(@"c:\testing.txt", e.ToString());
+				Assert.Ignore("This test expects to be able to connect to SQL Server. "
+					+ "Configure the server and database based on the settings in App.config.");
+			}
+		}
+
 		[SetUp]
 		public void Setup()
 		{
@@ -20,9 +35,8 @@ namespace DeploySharp.Tests.Tasks
 		[TearDown]
 		public void TearDown()
 		{
-			using (var connection = GetConnection())
+			using (var connection = GetOpenConnection())
 			{
-				connection.Open();
 				using (var command = connection.CreateCommand ())
 				{
 					command.CommandType = CommandType.Text;
@@ -76,9 +90,8 @@ namespace DeploySharp.Tests.Tasks
 				task.ExecuteAndAssertNoErrors ();
 			}
 
-			using (var connection = GetConnection ())
+			using (var connection = GetOpenConnection ())
 			{
-				connection.Open ();
 				using (var command = connection.CreateCommand ())
 				{
 					command.CommandType = CommandType.Text;
@@ -96,9 +109,8 @@ namespace DeploySharp.Tests.Tasks
 
 		private void AssertQueryReturns(string commandText, int expected)
 		{
-			using (var connection = GetConnection ())
+			using (var connection = GetOpenConnection ())
 			{
-				connection.Open();
 				using (var command = connection.CreateCommand ())
 				{
 					command.CommandType = CommandType.Text;
@@ -108,9 +120,9 @@ namespace DeploySharp.Tests.Tasks
 			}
 		}
 
-		private SqlConnection GetConnection() 
+		private SqlConnection GetOpenConnection()
 		{
-			var task = GetTaskWithCredentials();
+            var task = GetTaskWithCredentials();
 			var builder = new SqlConnectionStringBuilder {
 				DataSource = task.Server,
 				InitialCatalog = task.Database,
@@ -118,7 +130,9 @@ namespace DeploySharp.Tests.Tasks
 				Password = task.Password
 			};
 
-			return new SqlConnection (builder.ToString ());
+		    var connection = new SqlConnection (builder.ToString ());
+            connection.Open();
+		    return connection;
 		}
 
 		private ExecuteSqlScriptsTask GetTaskWithCredentials()
