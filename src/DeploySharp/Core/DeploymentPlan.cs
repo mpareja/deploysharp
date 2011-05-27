@@ -13,6 +13,11 @@ namespace DeploySharp.Core
 			_taskQueue = new Queue<object> ();
 		}
 
+        /// <summary>
+        /// Service provider is only required for custom
+        /// tasks that need dependencies pushed in.
+        /// </summary>
+        /// <param name="serviceProvider"></param>
 		public DeploymentPlan(IServiceProvider serviceProvider)
 		{
 			_builder = new TaskBuilder (serviceProvider);
