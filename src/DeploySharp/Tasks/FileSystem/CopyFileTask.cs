@@ -46,7 +46,6 @@ namespace DeploySharp.Tasks
 		TaskResult IExecutable.Execute()
 		{
 			var result = new TaskResult();
-			result.Success ("Copying {0} to {1}. ", Source, Destination);
 			if (_exactFileExists)
 			{
 				result.Success (Destination + " already exists with matching file contents.");
