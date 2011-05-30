@@ -18,7 +18,8 @@ namespace DeploySharp.Core
 
 		public void Error (Exception exception, string message, params string[] args)
 		{
-			Error(message + "\n--- Exception Details ---" + exception, args);
+			var exString = string.Format("{0}--- Exception Details ---{0}{1}", Environment.NewLine, exception);
+			Error(message + exString, args);
 		}
 
 		public void Warning (string message)
