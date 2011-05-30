@@ -60,7 +60,16 @@ namespace DeploySharp.Core
 				var executable = task as IExecutable;
 				if (executable != null)
 				{
-					var result = executable.Execute();
+					TaskResult result;
+					try
+					{
+						result = executable.Execute();
+					}
+					catch (Exception e)
+					{
+						result = new TaskResult();
+						result.Error(e, "'{0}' failed with exception:", task.GetType().Name);
+					}
 					result.SendSubResultsTo (receiver);
 					if (result.ContainsError ())
 						break;
