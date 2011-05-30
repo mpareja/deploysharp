@@ -93,9 +93,9 @@
     <Compile Include="TempDirectoryPathAbsolute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DeploySharp\DeploySharp.csproj">
+    <ProjectReference Include="..\DeploySharp\DeploySharp2010.csproj">
       <Project>{52B037DB-1388-4669-8478-F908F024C00D}</Project>
-      <Name>DeploySharp</Name>
+      <Name>DeploySharp2010</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
