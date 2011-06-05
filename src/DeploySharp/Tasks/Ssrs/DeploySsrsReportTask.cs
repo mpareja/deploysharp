@@ -6,33 +6,34 @@ using DeploySharp.ReportWebService;
 
 using NDepend.Helpers.FileDirectoryPath;
 
+
 namespace DeploySharp.Tasks.Ssrs
 {
 	public class DeploySsrsReportTask : SsrsTask, IExecutable, IPreparable
 	{
-		public FilePath ReportRdl { get; set; }
+		public PathMate.FilePath ReportRdl { get; set; }
 		public DirectoryPathRelative DestinationPathOnServer { get; set; }
 		public bool DeleteReportFirst { get; set; }
 
 		TaskResult IPreparable.Prepare()
 		{
 			var results = new TaskResult();
-			var rdlPath = ReportRdl.MakeAbsoluteAssumeCurrentDir();
+			var rdlPath = ReportRdl.RelativeToWorkingDir();
 			if (rdlPath.FileInfo.Exists)
 			{
 				try
 				{
-					_rdl = File.ReadAllBytes (rdlPath.Path);
+					_rdl = File.ReadAllBytes (rdlPath);
 				}
 				catch (IOException e)
 				{
-					results.Error ("Error while loading report file '{0}':\n{1}",
-						ReportRdl.Path, e.Message);
+					results.Error("Error while loading report file '{0}':\n{1}",
+						ReportRdl, e.Message);
 				}
 			}
 			else
 			{
-				results.Error ("Report definition (.rdl) file not found: " + ReportRdl.Path);
+				results.Error("Report definition (.rdl) file not found: " + ReportRdl);
 			}
 			return results;
 		}
