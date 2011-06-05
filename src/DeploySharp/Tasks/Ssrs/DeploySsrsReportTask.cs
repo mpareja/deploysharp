@@ -12,13 +12,13 @@ namespace DeploySharp.Tasks.Ssrs
 	public class DeploySsrsReportTask : SsrsTask, IExecutable, IPreparable
 	{
 		public PathMate.FilePath ReportRdl { get; set; }
-		public DirectoryPathRelative DestinationPathOnServer { get; set; }
+		public DirectoryPath DestinationPathOnServer { get; set; }
 		public bool DeleteReportFirst { get; set; }
 
 		TaskResult IPreparable.Prepare()
 		{
 			var results = new TaskResult();
-			var rdlPath = ReportRdl.RelativeToWorkingDir();
+			var rdlPath = ReportRdl.MakeAbsolute();
 			if (rdlPath.FileInfo.Exists)
 			{
 				try
